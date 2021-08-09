@@ -6,14 +6,15 @@ const fetchData = async (searchTerm) => { // helper function
          s: searchTerm 
       }
    });
-   console.log(response.data);
+  return response.data.Search;
 };
 
 // selecting search input for event listener //
-const input = document.querySelector('input');
-
-const onInput = (event) => {
-   fetchData(event.target.value);
+const input = document.querySelector('input'); 
+ 
+const onInput = async (event) => {
+   const movies = await fetchData(event.target.value);
+   console.log(movies);
 }; 
 // add eventListener
 input.addEventListener('input', debounce(onInput, 500));

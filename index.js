@@ -6,11 +6,28 @@ const fetchData = async (searchTerm) => { // helper function
          s: searchTerm 
       }
    });
+   if(response.data.Error){
+      return [];
+   }
   return response.data.Search;
 };
 
+const root = document.querySelector('.autocomplete');
+// HTML for autocomplete widget //
+root.innerHTML = `
+   <label><b>Search For a Movie</b></label> 
+   <input class="input" >
+   <div class="dropdown">
+      <div class="dropdown-menu">
+         <div class="dropdown-content results"></div>
+      </div>
+   </div>
+   `;
+
 // selecting search input for event listener //
 const input = document.querySelector('input'); 
+const dropdown = document.querySelector('.dropdown');
+const resultsWrapper = document.querySelector('.results');  // will wrap the rendered we are trying to sho user //
  
 const onInput = async (event) => {
    const movies = await fetchData(event.target.value);

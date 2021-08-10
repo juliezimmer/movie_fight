@@ -27,16 +27,21 @@ root.innerHTML = `
 // selecting search input for event listener //
 const input = document.querySelector('input'); 
 const dropdown = document.querySelector('.dropdown');
-const resultsWrapper = document.querySelector('.results');  // will wrap the rendered we are trying to sho user //
+const resultsWrapper = document.querySelector('.results');  // will wrap the rendered  movie we are trying to show user //
  
 const onInput = async (event) => {
    const movies = await fetchData(event.target.value);
+   if (!movies.length) {
+      dropdown.classList.remove('is-active');
+      return;
+   }  
    console.log(movies);
+   
    // clears movie results //
    resultsWrapper.innerHTML = '';
    // make dropdown active after data has been fetched from api //
    dropdown.classList.add('is-active');
-   // iterate over returned movies
+   // iterate over returned movies //
    for(let movie of movies){
       // div for the movie information //
       const option = document.createElement('a');
@@ -46,8 +51,8 @@ const onInput = async (event) => {
       option.classList.add('dropdown-item');
       // set innerHTML
       option.innerHTML = `
-      <img src="${imgSrc}" >
-      ${movie.Title}
+         <img src="${imgSrc}" >
+         ${movie.Title}
       `;
       resultsWrapper.appendChild(option);
    }
@@ -55,3 +60,10 @@ const onInput = async (event) => {
 // add eventListener
 input.addEventListener('input', debounce(onInput, 500));
 
+// adding global event Listener to entire document //
+// closes dropdown //
+document.addEventListener('click', (event) => {
+   if(!root.contains(event.target)){
+      dropdown.classList.remove('is-active');   
+   }
+});

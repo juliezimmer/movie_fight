@@ -32,16 +32,24 @@ const resultsWrapper = document.querySelector('.results');  // will wrap the ren
 const onInput = async (event) => {
    const movies = await fetchData(event.target.value);
    console.log(movies);
+   // clears movie results //
+   resultsWrapper.innerHTML = '';
+   // make dropdown active after data has been fetched from api //
+   dropdown.classList.add('is-active');
    // iterate over returned movies
    for(let movie of movies){
-      // div for the movie information
-      const div = document.createElement('div');
+      // div for the movie information //
+      const option = document.createElement('a');
+      // using a ternary operator to check for movie poster 
+      const imgSrc = movie.Poster === 'N/A' ? '' : movie.Poster;
+
+      option.classList.add('dropdown-item');
       // set innerHTML
-      div.innerHTML = `
-      <img src="${movie.Poster}" >
-      <h1>${movie.Title}</h1>
+      option.innerHTML = `
+      <img src="${imgSrc}" >
+      ${movie.Title}
       `;
-      document.querySelector('#target').appendChild(div);
+      resultsWrapper.appendChild(option);
    }
 }; 
 // add eventListener

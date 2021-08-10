@@ -43,7 +43,7 @@ const onInput = async (event) => {
    dropdown.classList.add('is-active');
    // iterate over returned movies //
    for(let movie of movies){
-      // div for the movie information //
+      // anchor elements created for the movie //
       const option = document.createElement('a');
       // using a ternary operator to check for movie poster 
       const imgSrc = movie.Poster === 'N/A' ? '' : movie.Poster;
@@ -54,11 +54,16 @@ const onInput = async (event) => {
          <img src="${imgSrc}" >
          ${movie.Title}
       `;
+      option.addEventListener('click', () => {
+         // closes dropdown with movies list //
+         dropdown.classList.remove('is-active');
+         input.value = movie.Title;
+      });
       resultsWrapper.appendChild(option);
    }
 }; 
 // add eventListener
-input.addEventListener('input', debounce(onInput, 500));
+input.addEventListener('input', debounce(onInput, 1000));
 
 // adding global event Listener to entire document //
 // closes dropdown //

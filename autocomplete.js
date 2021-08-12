@@ -1,7 +1,13 @@
-const createAutoComplete = ({ root, renderOption, onOptionSelect, inputValue  }) => {
+const createAutoComplete = ({ // destructured from config object in index.js //
+   root, 
+   renderOption, 
+   onOptionSelect, 
+   inputValue, 
+   fetchData  
+}) => {
    // HTML for autocomplete widget layout //
    root.innerHTML = `
-      <label><b>Search For a Movie</b></label> 
+      <label><b>Search</b></label> 
       <input class="input" >
       <div class="dropdown">
          <div class="dropdown-menu">
@@ -13,34 +19,34 @@ const createAutoComplete = ({ root, renderOption, onOptionSelect, inputValue  })
    // selecting search input for event listener //
    const input = root.querySelector('input'); 
    const dropdown = root.querySelector('.dropdown');
-   const resultsWrapper = root.querySelector('.results');  // will wrap the rendered  movie we are trying to show user //
+   const resultsWrapper = root.querySelector('.results');  // will wrap the rendered  item we are trying to show user //
    
    const onInput = async (event) => {
-      const movies = await fetchData(event.target.value);
+      const items = await fetchData(event.target.value);
       // checking if there is a movie(s) returned //
-      if (!movies.length) {
+      if (!items.length) {
          dropdown.classList.remove('is-active');
          return;
       }  
-      console.log(movies);
+      console.log(items);
       
       // clears movie results //
       resultsWrapper.innerHTML = '';
       // make dropdown active after data has been fetched from api //
       dropdown.classList.add('is-active');
       // iterate over returned movies //
-      for(let movie of movies){
+      for(let item of items){
          // anchor elements created for the movie //
          const option = document.createElement('a');
          
          option.classList.add('dropdown-item');
          // set innerHTML
-         option.innerHTML = renderOption(movie);
+         option.innerHTML = renderOption(item);
          option.addEventListener('click', () => {
-            // closes dropdown with movies list //
+            // closes dropdown with items list //
             dropdown.classList.remove('is-active');
-            input.value = inputValue(movie);
-            onOptionSelect(movie);
+            input.value = inputValue(item);
+            onOptionSelect(item);
          });
          resultsWrapper.appendChild(option);
       }

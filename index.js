@@ -1,16 +1,3 @@
-// server request using axios to fetch movie data //
-const fetchData = async (searchTerm) => { // helper function
-   const response = await axios.get('http://www.omdbapi.com/', {
-      params: {
-         apikey: '90d486a',
-         s: searchTerm 
-      }
-   });
-   if(response.data.Error){
-      return [];
-   }
-  return response.data.Search;
-};
 // config object as parameter // 
 // calling createAutoComplete to setup widgets //
 createAutoComplete({
@@ -27,9 +14,20 @@ createAutoComplete({
    },
    inputValue(movie){
       return movie.Title;
+   },
+   async fetchData(searchTerm) { 
+      const response = await axios.get('http://www.omdbapi.com/', {
+         params: {
+            apikey: '90d486a',
+            s: searchTerm 
+         }
+      });
+      if(response.data.Error){
+         return [];
+      }
+     return response.data.Search;
    }
 });
-
 
 // when the user selects a movie from the dropdown //
 const onMovieSelect = async movie => {

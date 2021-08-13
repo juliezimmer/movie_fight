@@ -6,11 +6,6 @@ const autoCompleteConfig = {
          ${movie.Title} (${movie.Year})
       `;
    },
-   onOptionSelect(movie){
-      // hides tutorial on screen when movie selected //
-      document.querySelector('.tutorial').classList.add('is-hidden');
-      onMovieSelect(movie);
-   },
    inputValue(movie){
       return movie.Title;
    },
@@ -33,14 +28,28 @@ const autoCompleteConfig = {
 createAutoComplete({
    ...autoCompleteConfig,
    root: document.querySelector('#left-autocomplete'),
+   onOptionSelect(movie){
+      // hides tutorial on screen when movie selected //
+      document.querySelector('.tutorial').classList.add('is-hidden');
+      // 2nd parameter is where to render the summary //
+      onMovieSelect(movie, document.querySelector('#left-summary'));
+   }
 });
 createAutoComplete({
    ...autoCompleteConfig,
    root: document.querySelector('#right-autocomplete'),
+   onOptionSelect(movie){
+      // hides tutorial on screen when movie selected //
+      document.querySelector('.tutorial').classList.add('is-hidden');
+      // 2nd parameter is where to render the summary //
+      onMovieSelect(movie, document.querySelector('#right-summary'));
+   }
 });
 
+let leftMovie;
+let rightMovie;
 // when the user selects a movie from the dropdown //
-const onMovieSelect = async movie => {
+const onMovieSelect = async (movie, summaryElement) => {
    const response = await axios.get('http://www.omdbapi.com/', {
       params: {
          apikey: '90d486a',
@@ -48,7 +57,7 @@ const onMovieSelect = async movie => {
       }
    });
    
-   document.querySelector('#summary').innerHTML = movieTemplate(response.data);
+   summaryElement.innerHTML = movieTemplate(response.data);
 };
 
 const movieTemplate = (movieDetail) => {

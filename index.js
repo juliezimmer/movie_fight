@@ -1,7 +1,4 @@
-// config object as parameter // 
-// calling createAutoComplete to setup widgets //
-createAutoComplete({
-   root: document.querySelector('.autocomplete'),
+const autoCompleteConfig = {
    renderOption (movie){
       const imgSrc = movie.Poster === 'N/A' ? '' : movie.Poster;
       return `
@@ -27,6 +24,17 @@ createAutoComplete({
       }
      return response.data.Search;
    }
+};
+
+// config object as parameter // 
+// calling createAutoComplete to setup widgets //
+createAutoComplete({
+   ...autoCompleteConfig,
+   root: document.querySelector('#left-autocomplete'),
+});
+createAutoComplete({
+   ...autoCompleteConfig,
+   root: document.querySelector('#right-autocomplete'),
 });
 
 // when the user selects a movie from the dropdown //

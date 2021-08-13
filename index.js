@@ -7,6 +7,8 @@ const autoCompleteConfig = {
       `;
    },
    onOptionSelect(movie){
+      // hides tutorial on screen when movie selected //
+      document.querySelector('.tutorial').classList.add('is-hidden');
       onMovieSelect(movie);
    },
    inputValue(movie){

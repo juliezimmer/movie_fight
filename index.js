@@ -69,13 +69,28 @@ const onMovieSelect = async (movie, summaryElement, side) => {
    }
 };
 
-// helper function
+// compares the movie stats side by side
 const runComparison = () => {
    const leftSideStats = document.querySelectorAll('#left-summary .notification');
    const rightSideStats = document.querySelectorAll('#right-summary .notification');
-   
-};
 
+   // iterate over each value
+   leftSideStats.forEach((leftStat, index) => {
+      const rightStat = rightSideStats[index];
+
+      const leftSideValue = leftStat.dataset.value; 
+      const rightSideValue = rightStat.dataset.value;
+
+      if (rightSideValue > leftSideValue){
+         leftStat.classList.remove('is-primary'); // from Bulma
+         leftStat.classList.add('is-warning'); // from Bulma
+      } else {
+         rightStat.classList.remove('is-primary');
+         rightStat.classList.add('is-warning');
+      }
+   
+   });
+}
 const movieTemplate = (movieDetail) => {
    const dollars = parseInt(movieDetail.BoxOffice.replace(/\$/g, '').replace(/,/g, ''));
    const metascore = parseInt(movieDetail.Metascore);
@@ -92,7 +107,7 @@ const movieTemplate = (movieDetail) => {
          return prev + value;
       }
    }, 0);
-  console.log(awards);
+  
    
    return `
       <article class="media">
